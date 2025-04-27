@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="bm">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Bayaran - Amieyz Watch</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+    <body>
+
+        <header id="home" class="main-header">
+            <nav  class="navbar">
+                <div class="logo">Amieyz Watch Store</div>
+                <ul class="nav-links">
+                    <a href="index.html"><i class="fa-solid fa-house fa-xl" style="color: #005eff;"></i></a>
+                    <a href="login.html"><i class="fa-solid fa-user fa-xl" style="color: #075ef2;"></i></i></a>
+                    <a href="index.html"> <i class="fa-solid fa-bag-shopping fa-xl" style="color: #0561ff;"></i></a>
+                    <a href="about.html"><i class="fa-solid fa-address-card fa-xl" style="color: #005eff;"></i></a>
+                    <a href="#footer"><i class="fa-solid fa-phone-volume fa-xl" style="color: #005eff;"></i></a>
+                    <a href="cart.html"><i class="fa-solid fa-cart-shopping fa-xl" style="color: #0062ff;"></i></a>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="payment-container">
+            <h2>Maklumat Pembayaran</h2>
+
+        <div class="payment-summary">
+            <p>Subtotal: <span id="subtotal"></span></p>
+            <p>Penghantaran: <span>RM10.00</span></p>
+            <hr>
+            <p class="total">Jumlah: <span id="total"></span></p>
+            <form class="payment-form" onsubmit="return validatePaymentForm()">
+                <label>Nama Penuh</label> 
+                <input type="text" id="fullname" placeholder="Nama Penuh" required>
+
+                <label>Nombor Kad</label>
+                <input type="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                
+                <div class="payment-row">
+                    <div>
+                        <label>Tarikh Luput</label>
+                        <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5" required>
+                </div>
+                </div>
+
+                <button class="btn-primary full-width" type="button" onclick="proceedPayment()">Bayar Sekarang</button>
+            </form>
+        </div>
+
+        <script>
+
+            function proceedPayment() {
+                localStorage.removeItem('cart');
+                localStorage.removeItem('totalPrice');
+
+                document.querySelector('.payment-form').innerHTML = `
+                <div class="loading-msg">
+                    <div class="spinner"></div>
+                    <p>Pembayaran Anda Sedang Di Proses.</p>
+                    </div>
+                    `;
+
+                    setTimeout(() => {
+                        window.location.href = "thankyou.html";
+                    }, 2500);
+            }
+
+            window.onload = function() {
+                let subtotal = parseFloat(localStorage.getItem('totalPrice')) || 0;
+                let shipping = 10.00;
+                let grandTotal = subtotal + shipping;
+
+                document.getElementById('subtotal').textContent = "RM" + subtotal.toFixed(2);
+                document.getElementById('total').textContent = "RM" + grandTotal.toFixed(2);
+            }
+
+            function validatePaymentForm() {
+                const fullname = document.getElementById("fullname").value.trim();
+                const cardNumber = document.getElementById("cardNumber").value.replace(/\s+/g,'');
+                const expiryDate = document.getElementById("expiryDate").value.trim();
+                const cvv = document.getElementById("cvv").value.trim();
+
+                const cardRegex = /^\d{16}$/;
+                const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+                const cvvRegex = /^\d{3}$/;
+
+                if (fullname === "" || !cardRegex.test(cardNumber) || !expiryRegex.test(expiryDate) || !cvvRegex.test(cvv)) {
+                alert("Sila pastikan semua maklumat diisi dengan betul.");
+                return false;
+            }
+
+            const paymentForm = document.querySelector(".payment-form");
+            paymentForm.innerHTML = ` 
+            <div class="loading-msg">
+                <div class="spinner"></div>
+                <p>Memproses Pembayaran Anda..</p>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                paymentForm.innerHTML = `
+                <div class="success-msg">
+                    <h3>Pembayaran Berjaya!!</h3>
+                    <p>Terima Kasih kerana membeli bersama kami.Resit akan dihantar melalui email anda.</p>
+                    <a href="index.html" class="btn-primary">Kembali ke Laman Utama</a>
+                    </div>
+                `;
+                }, 2500);
+
+                return false; 
+            }
+        
+        </script>  
+
+</body>
+</html>
