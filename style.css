@@ -572,3 +572,40 @@ nav ul {
         transform: rotate(45deg) scale(1);
     }
 }
+
+@media screen and (max-width: 768px) {
+    .hero {
+        padding: 40px 15px;
+    }
+
+    h1, h2 {
+        font-size: 20px;
+    }
+
+    .btn, .button-group .btn {
+        padding: 10px;
+        font-size: 14px;
+        width: 90%;
+    }
+
+    .produk-grid,
+    .kelebihan-grid,
+    .inspirasi-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .produk-item,
+    .kelebihan-item,
+    .testimoni-item {
+        width: 90%;
+    }
+
+    .promosi-box {
+        padding: 15px;
+    }
+
+    .footer {
+        font-size: 14px;
+    }
+}
